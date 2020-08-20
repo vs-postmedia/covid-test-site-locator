@@ -30,16 +30,3 @@ const Card = (props) => {
 }
 
 export default Card;
-
-
-
-	// <div className="schedule">
-			// 	<div className="date">
-			// 		<p className="day"><strong>{day}</strong></p>
-			// 		<p className="time">{time}</p>
-			// 	</div>
-			// 	<div className="update">
-			// 		<p><strong>Updated</strong></p>
-			// 		<p>about {d.lastUpdate}</p>
-			// 	</div>
-			// </div>

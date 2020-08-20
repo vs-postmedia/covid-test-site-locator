@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import * as Moment from 'moment-timezone';
-import Input from '../Input/Input';
+// import Filters from '../Filters/Filters';
+import Autocomplete from '../Autocomplete/Autocomplete';
 import SummaryBox from '../SummaryBox/SummaryBox';
 import CardList from '../CardList/CardList';
 import './Layout.css';
@@ -9,6 +10,7 @@ export class Layout extends Component {
 	state = {
 		data: [],
 		filteredData: [],
+		locationCount: 0,
 		timestamp: ''
 	};
 
@@ -18,10 +20,13 @@ export class Layout extends Component {
 			.then(response => response.json())
 			.then(data => {
 				console.log(data)
+				const cities = data.map(d => d.city);
+
 				this.setState({ 
 					data: data,
-					filteredData: data.filter(d => d.city === 'Vancouver') // filter for vancouver
-				})
+					cityList: [...new Set(cities)],
+					filteredData: data
+				});
 			});
 	}
 
@@ -30,11 +35,13 @@ export class Layout extends Component {
 	}
 
 	handleInputChange(event) {
-		// const selectedRoute = event.target.value === '' ? this.state.data : this.state.data.filter(d => d.route.includes(event.target.value));
-		const selectedRoute = event.target.value === '' ? this.state.data : this.state.data.filter(d => d.route === event.target.value.toUpperCase());
+		
+		// const selectedRoute = event.target.value === '' ? this.state.data : this.state.data.filter(d => d.route === event.target.value.toUpperCase());
+		const selectedCity = event === '' ? this.state.data : this.state.data.filter(d => d.city.toLowerCase() === event.toLowerCase());
 
 		this.setState({
-			filteredData: selectedRoute
+			filteredData: selectedCity,
+			locationCount: selectedCity.length
 		});
 	}
 
@@ -47,10 +54,15 @@ export class Layout extends Component {
 		}
 		return (
 			<Fragment>
-				<Input onChange={this.handleInputChange.bind(this)}></Input>
+				<div className="filter-list">
+ 					<Autocomplete 
+ 						suggestions={this.state.cityList} 
+ 						onKeyDown={this.handleInputChange.bind(this)}
+ 						onSelect={this.handleInputChange.bind(this)} />
+ 				</div>
+				
 				<SummaryBox data={this.state.filteredData}></SummaryBox>
 				{results}
-				
 			</Fragment>
 		);
 	}
@@ -64,3 +76,10 @@ export default Layout;
 * <footer className="footer">{`Last update: ${this.state.timestamp}`}</footer>
 *
 */
+
+// <Filters 
+// 	data={this.state.data}
+// 	cityList={this.state.cityList}
+// 	onChange={this.handleInputChange.bind(this)}
+// >
+// </Filters>

@@ -1,0 +1,12 @@
+.card-list {
+	max-height: 300px;
+	overflow-y: scroll;
+}
+
+@media screen and (min-width: 600px) {
+	.card-list {
+		display: flex;
+		justify-content: space-between;
+		flex-wrap: wrap;
+	}
+}

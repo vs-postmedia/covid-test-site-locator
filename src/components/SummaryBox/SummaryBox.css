@@ -1,0 +1,13 @@
+.summary-box {
+	margin: 0 auto 10px auto;
+	text-align: center;
+}
+.summary-box h2 {
+	font-family: 'BentonSansCond-Regular', sans-serif;
+	font-weight: 400;
+	margin: 5px 0;
+}
+
+.summary-box .highlight {
+	color: var(--brite_purple01);
+}

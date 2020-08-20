@@ -1,13 +1,14 @@
 {
-  "name": "react-template",
-  "homepage": "https://vs-postmedia.github.io/react-template/",
+  "name": "covid-test-site-locator",
+  "homepage": "https://vs-postmedia.github.io/covid-test-site-locator/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "gh-pages": "^2.1.1",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
-    "react-scripts": "3.0.1"
+    "gh-pages": "^2.2.0",
+    "moment-timezone": "^0.5.31",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-scripts": "^3.4.3"
   },
   "scripts": {
     "predeploy": "npm run build",

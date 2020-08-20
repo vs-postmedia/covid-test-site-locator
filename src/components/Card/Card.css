@@ -1,0 +1,55 @@
+.card {
+	border: 1px solid #D1D2D4;
+	border-radius: 5px;
+	margin: 0 auto 2rem auto;
+	padding: 5px;
+	width: 95%;
+}
+.card p {
+	margin: 0; 
+}
+.card header {
+	align-items: center;
+	display: flex;
+	justify-content: space-between;
+}
+.card .info {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	margin-bottom: 10px;
+}
+
+.card .info p {
+	flex: 1;
+	margin-bottom: 15px;
+}
+.card .info p.address {
+	color: var(--grey01);
+	flex: 1 100%;
+}
+.card .info p .bold {
+	color: var(--brite_purple01);
+	font-weight: 800;
+}
+.card .type {
+	background-color: var(--brite_purple01);
+	border-radius: 3px;
+	color: #FFF;
+	padding: 2px 4px;
+}
+.App .card h4 {
+	color: var(--grey01);
+	font-family: 'BentonSansCond-RegItalic', italic;
+}
+
+.card .info {
+	margin-block-start: 4px;
+}
+
+@media screen and (min-width: 600px) {
+	.card-list .card {
+		margin: 0 auto 1rem auto;
+		width: 45%;
+	}
+}

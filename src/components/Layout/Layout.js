@@ -12,6 +12,7 @@ export class Layout extends Component {
 	state = {
 		appointment: 'no',
 		appointment_bool: false,
+		weekend_bool: false,
 		city: '',
 		data: [],
 		filteredData: [],
@@ -25,7 +26,9 @@ export class Layout extends Component {
 		fetch(this.props.dataURL, {cache: 'no-store'})
 			.then(response => response.json())
 			.then(data => {
+
 				console.log(data)
+
 				const cities = data.map(d => d.city);
 				// hack to display all cities if nothing is entered in the search box
 				cities.unshift('');
@@ -39,25 +42,20 @@ export class Layout extends Component {
 			});
 	}
 
-	filterData(city, appointment) {
+	filterData(city, appointment, open_weekend) {
 		let filtered;
 
+		console.log(open_weekend)
 		if (city !== '') {
 			filtered = this.state.data
-				.filter(d => {
-					return d.city.toLowerCase() === city;
-				})
-				.filter(d => {
-					return appointment === 'yes' ? d.appointment_required.toLowerCase() === appointment : d.appointment_required;
-				});
+				.filter(d => d.city.toLowerCase() === city)
+				.filter(d => appointment === 'yes' ? d.appointment_required.toLowerCase() === appointment : d.appointment_required)
+				.filter(d => open_weekend ? d.open_weekend === 'Yes' : d);
 		} else {
 			filtered = this.state.data
-				.filter(d => {
-					return appointment === 'yes' ? d.appointment_required.toLowerCase() === appointment : d.appointment_required;
-				})
-				.filter(d => {
-					return d.city;
-				})
+				.filter(d => appointment === 'yes' ? d.appointment_required.toLowerCase() === appointment : d.appointment_required)
+				.filter(d => d.city)
+				.filter(d => open_weekend ? d.open_weekend === 'Yes' : d);
 		}
 		
 		this.setState({
@@ -71,7 +69,7 @@ export class Layout extends Component {
 			city: city
 		});
 
-		this.filterData(city, this.state.appointment);
+		this.filterData(city, this.state.appointment, this.state.weekend_bool);
 	}
 
 	handleAppointmentToggleChange(event) {
@@ -81,7 +79,7 @@ export class Layout extends Component {
 			appointment_bool: event
 		});
 
-		this.filterData(this.state.city, appointment);
+		this.filterData(this.state.city, appointment, this.state.weekend_bool);
 	}
 
 	handleKidsToggleChange(event) {
@@ -95,6 +93,14 @@ export class Layout extends Component {
 			filteredData: filteredLocations,
 			tmpData: tmp
 		});
+	}
+
+	handleWeekendToggleChange(event) {
+		this.setState({
+			weekend_bool: event
+		});
+
+		this.filterData(this.state.city, this.state_appointment, event);
 	}
 
 	setTimestamp(timestamp) {
@@ -120,7 +126,16 @@ export class Layout extends Component {
  						/>
  					</label>
  					<label className="toggle-container">
- 						<h4>Appointment required</h4>
+ 						<h4>Open<br/>Weekends</h4>
+						<ToggleSwitch
+							checked={this.state.weekend_bool}
+							className='appointment-switch'
+							onChange={this.handleWeekendToggleChange.bind(this)}
+							onColor='#9b3f86'
+						/>
+					</label>
+ 					<label className="toggle-container">
+ 						<h4>Appointment<br/>required</h4>
 						<ToggleSwitch
 							checked={this.state.appointment_bool}
 							className='appointment-switch'
@@ -140,20 +155,3 @@ export class Layout extends Component {
 
 export default Layout;
 
-
-/*
-*
-* <footer className="footer">{`Last update: ${this.state.timestamp}`}</footer>
-*
-
-
-<label className="toggle-container">
-		<h4>Accepts kids</h4>
-	<ToggleSwitch
-		checked={this.state.kids_toggle}
-		onChange={this.handleKidsToggleChange.bind(this)}
-		className='kids-switch'
-	/>
-</label>
-
-*/

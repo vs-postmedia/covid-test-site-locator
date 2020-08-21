@@ -18,8 +18,9 @@
 }
 .card .contact .address {
 	color: var(--grey01);
+	padding-bottom: 3px;
 }
-.card .contact .bold {
+.card .bold {
 	font-weight: 800;
 }
 .card .info {
@@ -30,13 +31,15 @@
 }
 .card .info p {
 	flex: 1;
-	/*margin-bottom: 15px;*/
+	font-size: 0.9rem; 
 	padding: 0 7px;
+	text-align: center;
 }
 
 .card .info p .bold {
 	color: var(--brite_purple01);
 	display: block;
+	font-size: 1rem;
 	font-weight: 800;
 }
 .card .type {
@@ -44,6 +47,10 @@
 	border-radius: 3px;
 	color: #FFF;
 	padding: 2px 4px;
+}
+.card .details {
+	font-size: 0.9rem;
+	margin-bottom: 3px;
 }
 .App .card h4 {
 	color: var(--grey01);

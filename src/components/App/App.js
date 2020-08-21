@@ -9,7 +9,7 @@ const dataUrl = 'https://vs-postmedia-data.sfo2.digitaloceanspaces.com/covid-tes
 function App() {
 	return (
 	  	<div className="App">
-	  		<h1>Find a test site near you</h1>
+	  		<h1>Find a COVID-19 test site near you</h1>
 	  		<Layout dataURL={dataUrl}></Layout>
 	  	</div>
 	);

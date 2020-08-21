@@ -13,22 +13,27 @@
 	display: flex;
 	justify-content: space-between;
 }
+.card .contact {
+	margin: 5px 0 15px 0;
+}
+.card .contact .address {
+	color: var(--grey01);
+}
+.card .contact .bold {
+	font-weight: 800;
+}
 .card .info {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
 	margin-bottom: 10px;
 }
-
 .card .info p {
 	flex: 1;
-	margin-bottom: 15px;
+	/*margin-bottom: 15px;*/
 	padding: 0 7px;
 }
-.card .info p.address {
-	color: var(--grey01);
-	flex: 1 100%;
-}
+
 .card .info p .bold {
 	color: var(--brite_purple01);
 	display: block;

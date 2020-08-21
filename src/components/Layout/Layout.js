@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import * as Moment from 'moment-timezone';
+import ToggleSwitch from 'react-switch';
 // import Filters from '../Filters/Filters';
+// import ToggleSwitch from '../ToggleSwitch/ToggleSwitch';
 import Autocomplete from '../Autocomplete/Autocomplete';
 import SummaryBox from '../SummaryBox/SummaryBox';
 import CardList from '../CardList/CardList';
@@ -8,10 +10,14 @@ import './Layout.css';
 
 export class Layout extends Component {
 	state = {
+		appointment: 'no',
+		appointment_bool: false,
+		city: '',
 		data: [],
 		filteredData: [],
+		kids_toggle: 'yes',
 		locationCount: 0,
-		timestamp: ''
+		tmpData: []
 	};
 
 	componentDidMount() {
@@ -25,24 +31,72 @@ export class Layout extends Component {
 				this.setState({ 
 					data: data,
 					cityList: [...new Set(cities)],
-					filteredData: data
+					filteredData: data,
+					tmpData: data
 				});
 			});
 	}
 
-	setTimestamp(timestamp) {
-		return Moment.tz(timestamp, 'America/Vancouver').calendar();
-	}
-
-	handleInputChange(event) {
+	filterData(city, appointment) {
+		let filtered;
+		console.log(city.length)
+		if (city.length > 0) {
+			filtered = this.state.data
+				.filter(d => {
+					return d.city.toLowerCase() === city;
+				})
+				.filter(d => {
+					return appointment === 'yes' ? d.appointment_required.toLowerCase() === appointment : d.appointment_required;
+				});
+		} else {
+			filtered = this.state.data
+				.filter(d => {
+					return appointment === 'yes' ? d.appointment_required.toLowerCase() === appointment : d.appointment_required;
+				})
+				.filter(d => {
+					return d.city;
+				})
+		}
 		
-		// const selectedRoute = event.target.value === '' ? this.state.data : this.state.data.filter(d => d.route === event.target.value.toUpperCase());
-		const selectedCity = event === '' ? this.state.data : this.state.data.filter(d => d.city.toLowerCase() === event.toLowerCase());
+		this.setState({
+			filteredData: filtered
+		});
+	}
+	handleInputChange(event) {
+		const city = event.toLowerCase();
 
 		this.setState({
-			filteredData: selectedCity,
-			locationCount: selectedCity.length
+			city: city
 		});
+
+		this.filterData(city, this.state.appointment);
+	}
+
+	handleAppointmentToggleChange(event) {
+		const appointment = event ? 'yes' : 'no';
+		this.setState({
+			appointment: appointment,
+			appointment_bool: event
+		});
+
+		this.filterData(this.state.city, appointment);
+	}
+
+	handleKidsToggleChange(event) {
+		const status = event ? 'yes' : 'no';
+		const tmp = this.state.filteredData;
+
+		const filteredLocations = status === 'no' ? this.state.filteredData.filter(d => d.accept_kids.toLowerCase() === 'no') : this.state.tmpData;
+
+		this.setState({
+			kids_toggle: event,
+			filteredData: filteredLocations,
+			tmpData: tmp
+		});
+	}
+
+	setTimestamp(timestamp) {
+		return Moment.tz(timestamp, 'America/Vancouver').calendar();
 	}
 
 	render() {
@@ -54,11 +108,25 @@ export class Layout extends Component {
 		}
 		return (
 			<Fragment>
-				<div className="filter-list">
- 					<Autocomplete 
- 						suggestions={this.state.cityList} 
- 						onKeyDown={this.handleInputChange.bind(this)}
- 						onSelect={this.handleInputChange.bind(this)} />
+				<div id="filter-list">
+					<label className="autocomplete-container">
+						<h4>City:</h4>
+ 						<Autocomplete 
+ 							suggestions={this.state.cityList} 
+ 							onKeyDown={this.handleInputChange.bind(this)}
+ 							onSelect={this.handleInputChange.bind(this)} 
+ 						/>
+ 					</label>
+ 					<label className="toggle-container">
+ 						<h4>Appointment required</h4>
+						<ToggleSwitch
+							checked={this.state.appointment_bool}
+							className='appointment-switch'
+							onChange={this.handleAppointmentToggleChange.bind(this)}
+							onColor='#9b3f86'
+						/>
+					</label>
+					
  				</div>
 				
 				<SummaryBox data={this.state.filteredData}></SummaryBox>
@@ -75,11 +143,15 @@ export default Layout;
 *
 * <footer className="footer">{`Last update: ${this.state.timestamp}`}</footer>
 *
-*/
 
-// <Filters 
-// 	data={this.state.data}
-// 	cityList={this.state.cityList}
-// 	onChange={this.handleInputChange.bind(this)}
-// >
-// </Filters>
+
+<label className="toggle-container">
+		<h4>Accepts kids</h4>
+	<ToggleSwitch
+		checked={this.state.kids_toggle}
+		onChange={this.handleKidsToggleChange.bind(this)}
+		className='kids-switch'
+	/>
+</label>
+
+*/

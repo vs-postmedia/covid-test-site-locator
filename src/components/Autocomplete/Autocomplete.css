@@ -1,9 +1,13 @@
 input.autocomplete {
-	border: 3px solid var(--brite_purple01);
+	border: 1px solid var(--brite_purple01);
 	border-radius: 5px;
 	font-family: BentonSansCond-Regular, Helvetica, sans-serif;
 	padding: 0.5rem;
-	width: 300px;
+	width: 100px;
+}
+input.autocomplete:focus {
+	outline: none !important;
+    border: 3px solid var(--brite_purple01);
 }
 
 .no-suggestions {

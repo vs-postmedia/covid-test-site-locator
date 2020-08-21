@@ -15,12 +15,16 @@ const Card = (props) => {
 				<p className="type">{d.city}</p>
 			</header>
 
-			<div className="info">
+			<div className="contact">
 				<p className="address">{d.address}</p>
+				<p><span className="bold">Phone:</span> {d.phone}</p>
+			</div>
 
+			<div className="info">
 				<p>Apointment required: <span className="bold">{d.appointment_required}</span></p>
 				<p>Accepts children: <span className="bold">{d.accept_kids}</span></p>
 			</div>
+			
 			
 			<h4>Details</h4>
 			<p className="info">{d.criteria}</p>

@@ -75,7 +75,6 @@ class Autocomplete extends Component {
 				userInput: filteredSuggestions[activeSuggestion]
 			});
 
-
 			// send response back to layout
 			this.props.onKeyDown(filteredSuggestions[activeSuggestion]);
 		}

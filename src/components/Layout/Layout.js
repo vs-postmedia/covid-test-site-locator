@@ -27,6 +27,8 @@ export class Layout extends Component {
 			.then(data => {
 				console.log(data)
 				const cities = data.map(d => d.city);
+				// hack to display all cities if nothing is entered in the search box
+				cities.unshift('');
 
 				this.setState({ 
 					data: data,
@@ -39,8 +41,8 @@ export class Layout extends Component {
 
 	filterData(city, appointment) {
 		let filtered;
-		console.log(city.length)
-		if (city.length > 0) {
+
+		if (city !== '') {
 			filtered = this.state.data
 				.filter(d => {
 					return d.city.toLowerCase() === city;
@@ -104,7 +106,7 @@ export class Layout extends Component {
 		if (this.state.filteredData.length > 0) {
 			results = <CardList data={this.state.filteredData}></CardList>;
 		} else {
-			results = <p className="no-data">No cancellations</p>;
+			results = <p className="no-data">No results</p>;
 		}
 		return (
 			<Fragment>

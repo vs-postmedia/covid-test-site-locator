@@ -1,8 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import * as Moment from 'moment-timezone';
 import ToggleSwitch from 'react-switch';
-// import Filters from '../Filters/Filters';
-// import ToggleSwitch from '../ToggleSwitch/ToggleSwitch';
 import Autocomplete from '../Autocomplete/Autocomplete';
 import SummaryBox from '../SummaryBox/SummaryBox';
 import CardList from '../CardList/CardList';
@@ -10,15 +8,14 @@ import './Layout.css';
 
 export class Layout extends Component {
 	state = {
-		appointment: 'no',
-		appointment_bool: false,
-		weekend_bool: false,
 		city: '',
 		data: [],
 		filteredData: [],
-		kids_toggle: 'yes',
-		locationCount: 0,
-		tmpData: []
+		filters: {
+			appointment: false,
+			drive_thru: false,
+			open_weekend: false
+		}
 	};
 
 	componentDidMount() {
@@ -42,65 +39,69 @@ export class Layout extends Component {
 			});
 	}
 
-	filterData(city, appointment, open_weekend) {
-		let filtered;
+	filterData() {
+		const city = this.state.city;
+		const filters = this.state.filters;
+		console.log(city)
 
-		console.log(open_weekend)
-		if (city !== '') {
-			filtered = this.state.data
-				.filter(d => d.city.toLowerCase() === city)
-				.filter(d => appointment === 'yes' ? d.appointment_required.toLowerCase() === appointment : d.appointment_required)
-				.filter(d => open_weekend ? d.open_weekend === 'Yes' : d);
-		} else {
-			filtered = this.state.data
-				.filter(d => appointment === 'yes' ? d.appointment_required.toLowerCase() === appointment : d.appointment_required)
-				.filter(d => d.city)
-				.filter(d => open_weekend ? d.open_weekend === 'Yes' : d);
-		}
+		let filtered = this.state.data
+			.filter(d => filters.appointment === true ? d.filters.appointment === true : d)
+			.filter(d => filters.open_weekend === true ? d.filters.open_weekend === true : d)
+			.filter(d => filters.drive_thru === true ? d.filters.drive_thru === true : d)
+			
+
+		let final = filtered.filter(d => {
+			return (
+				city ? d.city === city : d
+			);
+		})
 		
 		this.setState({
-			filteredData: filtered
+			// filteredData: city ? filtered.filter(d => d.city.toLowerCase() === city) : filtered
+			filteredData: final
 		});
 	}
 	handleInputChange(event) {
-		const city = event.toLowerCase();
+		console.log(event)
 
 		this.setState({
-			city: city
+			city: event
 		});
 
-		this.filterData(city, this.state.appointment, this.state.weekend_bool);
+		this.filterData();
 	}
 
 	handleAppointmentToggleChange(event) {
-		const appointment = event ? 'yes' : 'no';
+		const filters = this.state.filters;
+		filters.appointment = event;
+
 		this.setState({
-			appointment: appointment,
-			appointment_bool: event
+			filters: filters
 		});
 
-		this.filterData(this.state.city, appointment, this.state.weekend_bool);
+		this.filterData();
 	}
 
-	handleKidsToggleChange(event) {
-		const status = event ? 'yes' : 'no';
-		const tmp = this.state.filteredData;
-
-		const filteredLocations = status === 'no' ? this.state.filteredData.filter(d => d.accept_kids.toLowerCase() === 'no') : this.state.tmpData;
+	handleDrivethruToggleChange(event) {
+		const filters = this.state.filters;
+		filters.drive_thru = event;
 
 		this.setState({
-			kids_toggle: event,
-			filteredData: filteredLocations,
-			tmpData: tmp
+			filters: filters
 		});
+
+		this.filterData();
 	}
 
 	handleWeekendToggleChange(event) {
+		const filters = this.state.filters;
+		filters.open_weekend = event;
+
 		this.setState({
-			weekend_bool: event
+			filters: filters
 		});
 
-		this.filterData(this.state.city, this.state_appointment, event);
+		this.filterData();
 	}
 
 	setTimestamp(timestamp) {
@@ -109,8 +110,9 @@ export class Layout extends Component {
 
 	render() {
 		let results;
+		const state = this.state;
 		if (this.state.filteredData.length > 0) {
-			results = <CardList data={this.state.filteredData}></CardList>;
+			results = <CardList className={`${state.city} ${state.filters.appointment} ${state.filters.drive_thru} ${state.filters.open_weekend}`} data={state.filteredData}></CardList>;
 		} else {
 			results = <p className="no-data">No results</p>;
 		}
@@ -126,9 +128,9 @@ export class Layout extends Component {
  						/>
  					</label>
  					<label className="toggle-container">
- 						<h4>Open<br/>Weekends</h4>
+ 						<h4>Open<br/>weekends</h4>
 						<ToggleSwitch
-							checked={this.state.weekend_bool}
+							checked={this.state.filters.open_weekend}
 							className='appointment-switch'
 							onChange={this.handleWeekendToggleChange.bind(this)}
 							onColor='#9b3f86'
@@ -137,13 +139,21 @@ export class Layout extends Component {
  					<label className="toggle-container">
  						<h4>Appointment<br/>required</h4>
 						<ToggleSwitch
-							checked={this.state.appointment_bool}
+							checked={this.state.filters.appointment}
 							className='appointment-switch'
 							onChange={this.handleAppointmentToggleChange.bind(this)}
 							onColor='#9b3f86'
 						/>
 					</label>
-					
+ 					<label className="toggle-container">
+ 						<h4>Drive<br/>through</h4>
+						<ToggleSwitch
+							checked={this.state.filters.drive_thru}
+							className='appointment-switch'
+							onChange={this.handleDrivethruToggleChange.bind(this)}
+							onColor='#9b3f86'
+						/>
+					</label>
  				</div>
 				
 				<SummaryBox data={this.state.filteredData}></SummaryBox>

@@ -15,15 +15,14 @@
 	margin-bottom: 10px;
 	margin-top: 5px;
 }
-/*#filter-header {
-	color: var(--grey01);
-	font-family: BentonSansCond-Regular, Helvetica, sans-serif;
-	text-transform: uppercase;
-}*/
+
 #filter-list {
 	display: flex;
-	justify-content: space-around;
+	/*justify-content: space-around;*/
 	margin: 10px 0 25px 0;
+}
+#filter-list > * {
+	margin: 0 0.5rem;
 }
 .toggle-container {
 	max-width: 100px;

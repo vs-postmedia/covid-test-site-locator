@@ -4,8 +4,8 @@ import './SummaryBox.css';
 
 const SummaryBox = (props) => {
 	const length = props.data.length;
-	const is_are = length > 1 ? 'are' : 'is';
-	const center = length > 1 ? 'centers that match' : 'center that matches';
+	const is_are = length === 1 ? 'is' : 'are';
+	const center = length === 1 ? 'center that matches' : 'centers that match';
 
 	return (
 		<div className="summary-box">		

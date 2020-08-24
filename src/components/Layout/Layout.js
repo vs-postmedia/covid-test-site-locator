@@ -39,8 +39,8 @@ export class Layout extends Component {
 			});
 	}
 
-	filterData() {
-		const city = this.state.city;
+	filterData(city) {
+		// const city = this.state.city;
 		const filters = this.state.filters;
 
 		let filtered = this.state.data
@@ -60,13 +60,11 @@ export class Layout extends Component {
 		});
 	}
 	handleInputChange(event) {
-		console.log(event)
-
 		this.setState({
 			city: event
 		});
 
-		this.filterData();
+		this.filterData(event);
 	}
 
 	handleAppointmentToggleChange(event) {

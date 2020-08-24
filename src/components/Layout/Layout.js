@@ -24,7 +24,7 @@ export class Layout extends Component {
 			.then(response => response.json())
 			.then(data => {
 
-				console.log(data)
+				// console.log(data)
 
 				const cities = data.map(d => d.city);
 				// hack to display all cities if nothing is entered in the search box
@@ -42,7 +42,6 @@ export class Layout extends Component {
 	filterData() {
 		const city = this.state.city;
 		const filters = this.state.filters;
-		console.log(city)
 
 		let filtered = this.state.data
 			.filter(d => filters.appointment === true ? d.filters.appointment === true : d)
@@ -57,7 +56,6 @@ export class Layout extends Component {
 		})
 		
 		this.setState({
-			// filteredData: city ? filtered.filter(d => d.city.toLowerCase() === city) : filtered
 			filteredData: final
 		});
 	}
